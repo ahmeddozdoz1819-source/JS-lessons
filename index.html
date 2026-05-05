@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Mastery Hub - Learn JavaScript Interactively</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #e94560;
+            --tertiary: #0f3460;
+            --code-bg: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --success: #4ecca3;
+            --error: #ff6b6b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid var(--tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-pill {
+            padding: 0.5rem 1rem;
+            background: var(--tertiary);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-pill:hover, .nav-pill.active {
+            background: var(--secondary);
+            color: var(--text-primary);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: var(--tertiary);
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--tertiary) 0%, var(--primary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e94560' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero h1 span {
+            color: var(--secondary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            position: relative;
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--tertiary);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 73px;
+            z-index: 999;
+        }
+
+        .progress-label {
+            white-space: nowrap;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 150px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--tertiary);
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .lesson-card {
+            background: var(--tertiary);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.1);
+        }
+
+        .lesson-card.completed {
+            border-left: 4px solid var(--success);
+        }
+
+        .lesson-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lesson-title h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .lesson-number {
+            background: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--secondary);
+        }
+
+        .lesson-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .check-btn {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .check-btn:hover {
+            border-color: var(--secondary);
+        }
+
+        .check-btn.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .check-btn.checked::after {
+            content: '✓';
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .lesson-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .lesson-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .lesson-card.expanded .lesson-content {
+            max-height: 2000px;
+        }
+
+        .lesson-body {
+            padding: 0 1.5rem 1.5rem;
+            border-top: 1px solid var(--primary);
+        }
+
+        .lesson-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: var(--primary);
+        }
+
+        .code-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            background: var(--tertiary);
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary);
+            color: var(--text-primary);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+            color: var(--primary);
+        }
+
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code {
+            color: var(--text-primary);
+        }
+
+        .keyword { color: #c792ea; }
+        .string { color: #c3e88d; }
+        .number { color: #f78c6c; }
+        .function { color: #82aaff; }
+        .comment { color: #546e7a; }
+        .operator { color: #89ddff; }
+
+        /* Try It Button */
+        .try-it-btn {
+            background: var(--secondary);
+            border: none;
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+        }
+
+        .try-it-btn:hover {
+            background: #ff5a75;
+            transform: translateY(-2px);
+        }
+
+        /* Code Playground Modal */
+        .playground {
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .playground.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .playground-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .playground-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+
+        .playground textarea {
+            width: 100%;
+            height: 150px;
+            background: var(--primary);
+            border: 1px solid var(--tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            resize: vertical;
+        }
+
+        .playground textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .playground-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .run-btn {
+            background: var(--success);
+            border: none;
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .run-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(78, 204, 163, 0.3);
+        }
+
+        .clear-btn {
+            background: var(--tertiary);
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .output-area {
+            background: var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 80px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
+
+        .output-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .output-content {
+            color: var(--success);
+        }
+
+        .output-content.error {
+            color: var(--error);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--tertiary);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                padding: 1rem;
+                flex-direction: column;
+                border-bottom: 1px solid var(--tertiary);
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .progress-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .progress-label, .progress-text {
+                width: 100%;
+                text-align: center;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">JS</div>
+            <span>JS</span> Mastery Hub
+        </div>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav id="nav">
+            <button class="nav-pill active" onclick="scrollToSection('basics')">Basics</button>
+            <button class="nav-pill" onclick="scrollToSection('control')">Control Flow</button>
+            <button class="nav-pill" onclick="scrollToSection('functions')">Functions</button>
+            <button class="nav-pill" onclick="scrollToSection('arrays')">Arrays</button>
+            <button class="nav-pill" onclick="scrollToSection('objects')">Objects</button>
+            <button class="nav-pill" onclick="scrollToSection('dom')">DOM</button>
+            <button class="nav-pill" onclick="scrollToSection('async')">Async</button>
+            <button class="nav-pill" onclick="scrollToSection('es6')">ES6+</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Master <span>JavaScript</span></h1>
+        <p>Learn JavaScript from basics to advanced concepts with interactive code examples. Practice directly in your browser.</p>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="lessonCount">0</div>
+                <div class="stat-label">Lessons</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Code Examples</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="progress-container">
+        <span class="progress-label">Your Progress</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">0%</span>
+    </div>
+
+    <main>
+        <!-- Basics Section -->
+        <section class="section" id="basics">
+            <div class="section-header">
+                <div class="section-icon">📦</div>
+                <h2 class="section-title">JavaScript Basics</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="basics-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Variables & Constants</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'basics-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Learn how to declare variables using let, const, and var. Understand the differences between them.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Using let - can be reassigned</span>
+<span class="keyword">let</span> name = <span class="string">"John"</span>;
+name = <span class="string">"Jane"</span>; <span class="comment">// ✓ allowed</span>
+
+<span class="comment">// Using const - cannot be reassigned</span>
+<span class="keyword">const</span> PI = <span class="number">3.14159</span>;
+<span class="comment">// PI = 3; // ✗ Error!</span>
+
+<span class="comment">// Using var - old way (avoid)</span>
+<span class="keyword">var</span> oldStyle = <span class="string">"legacy"</span>;</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">let name = "John";
+const PI = 3.14159;
+
+console.log("Name:", name);
+console.log("PI:", PI);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="basics-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Data Types</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'basics-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">JavaScript has dynamic types. Learn about primitive and reference types.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Primitive Types</span>
+<span class="keyword">let</span> str = <span class="string">"Hello"</span>;      <span class="comment">// String</span>
+<span class="keyword">let</span> num = <span class="number">42</span>;            <span class="comment">// Number</span>
+<span class="keyword">let</span> bool = <span class="keyword">true</span>;         <span class="comment">// Boolean</span>
+<span class="keyword">let</span> empty = <span class="keyword">null</span>;        <span class="comment">// Null</span>
+<span class="keyword">let</span> notDefined;          <span class="comment">// Undefined</span>
+
+<span class="comment">// Reference Types</span>
+<span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];   <span class="comment">// Array</span>
+<span class="keyword">let</span> obj = {a: <span class="number">1</span>};       <span class="comment">// Object</span>
+
+<span class="comment">// Check type with typeof</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="keyword">typeof</span> str);  <span class="comment">// "string"</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="keyword">typeof</span> arr);  <span class="comment">// "object"</span></code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">let str = "Hello";
+let num = 42;
+let bool = true;
+let arr = [1, 2, 3];
+let obj = { name: "JS" };
+
+console.log("String:", typeof str);
+console.log("Number:", typeof num);
+console.log("Boolean:", typeof bool);
+console.log("Array:", typeof arr);
+console.log("Object:", typeof obj);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="basics-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Operators</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'basics-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Master arithmetic, comparison, logical, and assignment operators.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Arithmetic</span>
+<span class="keyword">let</span> sum = <span class="number">10</span> + <span class="number">5</span>;    <span class="comment">// 15</span>
+<span class="keyword">let</span> diff = <span class="number">10</span> - <span class="number">5</span>;   <span class="comment">// 5</span>
+<span class="keyword">let</span> prod = <span class="number">10</span> * <span class="number">5</span>;   <span class="comment">// 50</span>
+<span class="keyword">let</span> quot = <span class="number">10</span> / <span class="number">5</span>;   <span class="comment">// 2</span>
+<span class="keyword">let</span> rem = <span class="number">10</span> % <span class="number">3</span>;    <span class="comment">// 1</span>
+
+<span class="comment">// Comparison</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="number">5</span> == <span class="string">"5"</span>);  <span class="comment">// true (loose)</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="number">5</span> === <span class="string">"5"</span>); <span class="comment">// false (strict)</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="number">5</span> !== <span class="string">"5"</span>); <span class="comment">// true</span>
+
+<span class="comment">// Logical</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="keyword">true</span> && <span class="keyword">false</span>); <span class="comment">// false</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="keyword">true</span> || <span class="keyword">false</span>); <span class="comment">// true</span>
+<span class="function">console</span>.<span class="function">log</span>(!<span class="keyword">true</span>);          <span class="comment">// false</span></code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Try different operators
+console.log("5 == '5':", 5 == "5");
+console.log("5 === '5':", 5 === "5");
+console.log("10 + 5:", 10 + 5);
+console.log("true && false:", true && false);
+console.log("true || false:", true || false);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Control Flow Section -->
+        <section class="section" id="control">
+            <div class="section-header">
+                <div class="section-icon">🔀</div>
+                <h2 class="section-title">Control Flow</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="control-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>If-Else Statements</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'control-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Execute code conditionally based on boolean expressions.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="keyword">let</span> age = <span class="number">18</span>;
+
+<span class="keyword">if</span> (age >= <span class="number">18</span>) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Adult"</span>);
+} <span class="keyword">else if</span> (age >= <span class="number">13</span>) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Teenager"</span>);
+} <span class="keyword">else</span> {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Child"</span>);
+}
+
+<span class="comment">// Ternary operator (short form)</span>
+<span class="keyword">let</span> status = age >= <span class="number">18</span> ? <span class="string">"Adult"</span> : <span class="string">"Minor"</span>;
+<span class="function">console</span>.<span class="function">log</span>(status);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">let age = 20;
+
+if (age >= 18) {
+    console.log("You are an adult");
+} else if (age >= 13) {
+    console.log("You are a teenager");
+} else {
+    console.log("You are a child");
+}
+
+// Try changing age!</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="control-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Loops</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'control-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Repeat code multiple times using for, while, and do-while loops.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// For loop</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">3</span>; i++) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Count:"</span>, i);
+}
+
+<span class="comment">// While loop</span>
+<span class="keyword">let</span> count = <span class="number">0</span>;
+<span class="keyword">while</span> (count < <span class="number">3</span>) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"While:"</span>, count);
+    count++;
+}
+
+<span class="comment">// For...of (arrays)</span>
+<span class="keyword">let</span> fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>];
+<span class="keyword">for</span> (<span class="keyword">let</span> fruit <span class="keyword">of</span> fruits) {
+    <span class="function">console</span>.<span class="function">log</span>(fruit);
+}</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// For loop
+for (let i = 0; i < 3; i++) {
+    console.log("For loop:", i);
+}
+
+// For...of
+let colors = ["red", "green", "blue"];
+for (let color of colors) {
+    console.log("Color:", color);
+}</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="control-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Switch Statement</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'control-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Handle multiple conditions with switch statements.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="keyword">let</span> day = <span class="number">3</span>;
+
+<span class="keyword">switch</span> (day) {
+    <span class="keyword">case</span> <span class="number">1</span>:
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Monday"</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="number">2</span>:
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Tuesday"</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="number">3</span>:
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Wednesday"</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">default</span>:
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Other day"</span>);
+}</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">let day = 2;
+
+switch (day) {
+    case 1:
+        console.log("Monday");
+        break;
+    case 2:
+        console.log("Tuesday");
+        break;
+    case 3:
+        console.log("Wednesday");
+        break;
+    case 4:
+        console.log("Thursday");
+        break;
+    case 5:
+        console.log("Friday");
+        break;
+    default:
+        console.log("Weekend!");
+}</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Functions Section -->
+        <section class="section" id="functions">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2 class="section-title">Functions</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="functions-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Function Declaration & Expression</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'functions-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Learn different ways to define functions in JavaScript.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Function Declaration (hoisted)</span>
+<span class="keyword">function</span> <span class="function">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+}
+
+<span class="comment">// Function Expression</span>
+<span class="keyword">const</span> <span class="function">add</span> = <span class="keyword">function</span>(a, b) {
+    <span class="keyword">return</span> a + b;
+};
+
+<span class="comment">// Arrow Function (ES6)</span>
+<span class="keyword">const</span> <span class="function">multiply</span> = (a, b) => a * b;
+
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">greet</span>(<span class="string">"John"</span>));
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">add</span>(<span class="number">3</span>, <span class="number">5</span>));
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">multiply</span>(<span class="number">4</span>, <span class="number">6</span>));</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Try different function types
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+
+const add = function(a, b) {
+    return a + b;
+};
+
+const multiply = (a, b) => a * b;
+
+console.log(greet("World"));
+console.log("Add:", add(5, 3));
+console.log("Multiply:", multiply(4, 7));</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="functions-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Parameters & Arguments</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'functions-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Understand default parameters, rest parameters, and arguments.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Default parameters</span>
+<span class="keyword">const</span> <span class="function">greet</span> = (name = <span class="string">"Guest"</span>) => {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+};
+
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">greet</span>());        <span class="comment">// Hello, Guest!</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">greet</span>(<span class="string">"John"</span>)); <span class="comment">// Hello, John!</span>
+
+<span class="comment">// Rest parameters</span>
+<span class="keyword">const</span> <span class="function">sum</span> = (...numbers) => {
+    <span class="keyword">return</span> numbers.<span class="function">reduce</span>((a, b) => a + b, <span class="number">0</span>);
+};
+
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">sum</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)); <span class="comment">// 10</span></code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Default parameters
+const greet = (name = "Guest", greeting = "Hello") => {
+    return greeting + ", " + name + "!";
+};
+
+console.log(greet());
+console.log(greet("Alice", "Hi"));
+
+// Rest parameters
+const sum = (...numbers) => {
+    return numbers.reduce((a, b) => a + b, 0);
+};
+
+console.log("Sum:", sum(1, 2, 3, 4, 5));</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="functions-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Scope & Closures</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'functions-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Understand variable scope and closures (functions that remember their environment).</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Global vs Local Scope</span>
+<span class="keyword">let</span> globalVar = <span class="string">"I'm global"</span>;
+
+<span class="keyword">function</span> <span class="function">testScope</span>() {
+    <span class="keyword">let</span> localVar = <span class="string">"I'm local"</span>;
+    <span class="function">console</span>.<span class="function">log</span>(globalVar);
+    <span class="function">console</span>.<span class="function">log</span>(localVar);
+}
+
+<span class="function">testScope</span>();
+
+<span class="comment">// Closure - function with preserved scope</span>
+<span class="keyword">const</span> <span class="function">counter</span> = () => {
+    <span class="keyword">let</span> count = <span class="number">0</span>;
+    <span class="keyword">return</span> () => ++count;
+};
+
+<span class="keyword">const</span> increment = <span class="function">counter</span>();
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">increment</span>()); <span class="comment">// 1</span>
+<span class="function">console</span>.<span class="function">log</span>(<span class="function">increment</span>()); <span class="comment">// 2</span></code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Closure example
+const counter = () => {
+    let count = 0;
+    return function() {
+        count++;
+        return count;
+    };
+};
+
+const increment = counter();
+console.log("First call:", increment());
+console.log("Second call:", increment());
+console.log("Third call:", increment());</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arrays Section -->
+        <section class="section" id="arrays">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2 class="section-title">Arrays</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="arrays-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Array Methods</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'arrays-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Learn essential array methods: push, pop, shift, unshift, splice.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="keyword">let</span> fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>];
+
+<span class="comment">// Add to end</span>
+fruits.<span class="function">push</span>(<span class="string">"orange"</span>);
+<span class="function">console</span>.<span class="function">log</span>(fruits);
+
+<span class="comment">// Remove from end</span>
+fruits.<span class="function">pop</span>();
+<span class="function">console</span>.<span class="function">log</span>(fruits);
+
+<span class="comment">// Add to start</span>
+fruits.<span class="function">unshift</span>(<span class="string">"mango"</span>);
+<span class="function">console</span>.<span class="function">log</span>(fruits);
+
+<span class="comment">// Remove from start</span>
+fruits.<span class="function">shift</span>();
+<span class="function">console</span>.<span class="function">log</span>(fruits);
+
+<span class="comment">// Splice - add/remove at position</span>
+fruits.<span class="function">splice</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="string">"grape"</span>);
+<span class="function">console</span>.<span class="function">log</span>(fruits);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">let colors = ["red", "blue"];
+
+colors.push("green");
+console.log("After push:", colors);
+
+colors.pop();
+console.log("After pop:", colors);
+
+colors.unshift("yellow");
+console.log("After unshift:", colors);
+
+colors.shift();
+console.log("After shift:", colors);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="arrays-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Array Iteration</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'arrays-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Iterate arrays using forEach, map, filter, reduce, find.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="keyword">const</span> nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+
+<span class="comment">// forEach - iterate each element</span>
+nums.<span class="function">forEach</span>(n => <span class="function">console</span>.<span class="function">log</span>(n));
+
+<span class="comment">// map - transform each element</span>
+<span class="keyword">const</span> doubled = nums.<span class="function">map</span>(n => n * <span class="number">2</span>);
+<span class="function">console</span>.<span class="function">log</span>(doubled);
+
+<span class="comment">// filter - keep matching elements</span>
+<span class="keyword">const</span> evens = nums.<span class="function">filter</span>(n => n % <span class="number">2</span> === <span class="number">0</span>);
+<span class="function">console</span>.<span class="function">log</span>(evens);
+
+<span class="comment">// reduce - accumulate to single value</span>
+<span class="keyword">const</span> sum = nums.<span class="function">reduce</span>((acc, n) => acc + n, <span class="number">0</span>);
+<span class="function">console</span>.<span class="function">log</span>(sum);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">const nums = [1, 2, 3, 4, 5];
+
+// map - transform each element
+const doubled = nums.map(n => n * 2);
+console.log("Doubled:", doubled);
+
+// filter - keep matching elements
+const evens = nums.filter(n => n % 2 === 0);
+console.log("Evens:", evens);
+
+// reduce - accumulate to single value
+const sum = nums.reduce((acc, n) => acc + n, 0);
+console.log("Sum:", sum);
+
+// find - first matching element
+const found = nums.find(n => n > 3);
+console.log("First > 3:", found);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="arrays-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Destructuring & Spread</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'arrays-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Use destructuring and spread operator to work with arrays efficiently.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Destructuring</span>
+<span class="keyword">const</span> colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>];
+<span class="keyword">const</span> [first, second, third] = colors;
+<span class="function">console</span>.<span class="function">log</span>(first, second, third);
+
+<span class="comment">// Skip elements</span>
+<span class="keyword">const</span> [a, , c] = colors;
+<span class="function">console</span>.<span class="function">log</span>(a, c);
+
+<span class="comment">// Spread operator</span>
+<span class="keyword">const</span> moreColors = [...colors, <span class="string">"yellow"</span>];
+<span class="function">console</span>.<span class="function">log</span>(moreColors);
+
+<span class="comment">// Rest parameter in destructuring</span>
+<span class="keyword">const</span> [head, ...tail] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
+<span class="function">console</span>.<span class="function">log</span>(head, tail);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Destructuring arrays
+const colors = ["red", "green", "blue", "yellow"];
+const [first, second] = colors;
+console.log("First:", first);
+console.log("Second:", second);
+
+// Skip elements
+const [, , third] = colors;
+console.log("Third:", third);
+
+// Spread operator
+const moreColors = [...colors, "purple"];
+console.log("More colors:", moreColors);
+
+// Rest in destructuring
+const [head, ...rest] = [1, 2, 3, 4, 5];
+console.log("Head:", head);
+console.log("Rest:", rest);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objects Section -->
+        <section class="section" id="objects">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2 class="section-title">Objects & Classes</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="objects-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Object Basics</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'objects-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Create and manipulate objects with properties and methods.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Create object</span>
+<span class="keyword">const</span> person = {
+    name: <span class="string">"John"</span>,
+    age: <span class="number">30</span>,
+    city: <span class="string">"NYC"</span>,
+    <span class="comment">// Method</span>
+    <span class="function">greet</span>() {
+        <span class="keyword">return</span> <span class="string">`Hi, I'm ${this.name}`</span>;
+    }
+};
+
+<span class="function">console</span>.<span class="function">log</span>(person.name);
+<span class="function">console</span>.<span class="function">log</span>(person[<span class="string">"age"</span>]);
+<span class="function">console</span>.<span class="function">log</span>(person.<span class="function">greet</span>());
+
+<span class="comment">// Add/modify properties</span>
+person.email = <span class="string">"john@email.com"</span>;
+<span class="function">console</span>.<span class="function">log</span>(person);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">const person = {
+    name: "Alice",
+    age: 25,
+    city: "Paris",
+    greet() {
+        return "Hi, I'm " + this.name;
+    }
+};
+
+console.log("Name:", person.name);
+console.log("Method:", person.greet());
+
+// Add new property
+person.email = "alice@email.com";
+console.log("Email:", person.email);
+
+// Object.keys and values
+console.log("Keys:", Object.keys(person));
+console.log("Values:", Object.values(person));</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="objects-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Classes</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'objects-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Use classes as blueprints for creating objects.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Class definition</span>
+<span class="keyword">class</span> <span class="function">Animal</span> {
+    <span class="function">constructor</span>(name, sound) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.sound = sound;
+    }
+
+    <span class="function">speak</span>() {
+        <span class="function">console</span>.<span class="function">log</span>(<span class="keyword">this</span>.sound);
+    }
+}
+
+<span class="comment">// Create instances</span>
+<span class="keyword">const</span> dog = <span class="keyword">new</span> <span class="function">Animal</span>(<span class="string">"Dog"</span>, <span class="string">"Woof!"</span>);
+<span class="keyword">const</span> cat = <span class="keyword">new</span> <span class="function">Animal</span>(<span class="string">"Cat"</span>, <span class="string">"Meow!"</span>);
+
+dog.<span class="function">speak</span>();
+cat.<span class="function">speak</span>();</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">class Animal {
+    constructor(name, sound) {
+        this.name = name;
+        this.sound = sound;
+    }
+
+    speak() {
+        console.log(this.name + " says: " + this.sound);
+    }
+}
+
+const dog = new Animal("Dog", "Woof!");
+const cat = new Animal("Cat", "Meow!");
+
+dog.speak();
+cat.speak();</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="objects-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Inheritance</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'objects-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Extend classes using inheritance with extends and super.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Parent class</span>
+<span class="keyword">class</span> <span class="function">Animal</span> {
+    <span class="function">constructor</span>(name) {
+        <span class="keyword">this</span>.name = name;
+    }
+    <span class="function">eat</span>() {
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">`${this.name} is eating`</span>);
+    }
+}
+
+<span class="comment">// Child class</span>
+<span class="keyword">class</span> <span class="function">Dog</span> <span class="keyword">extends</span> <span class="function">Animal</span> {
+    <span class="function">constructor</span>(name, breed) {
+        <span class="keyword">super</span>(name);
+        <span class="keyword">this</span>.breed = breed;
+    }
+    <span class="function">bark</span>() {
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Woof!"</span>);
+    }
+}
+
+<span class="keyword">const</span> max = <span class="keyword">new</span> <span class="function">Dog</span>(<span class="string">"Max"</span>, <span class="string">"Labrador"</span>);
+max.<span class="function">eat</span>();
+max.<span class="function">bark</span>();</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    eat() {
+        return this.name + " is eating";
+    }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name);
+        this.breed = breed;
+    }
+
+    bark() {
+        return this.name + " says Woof!";
+    }
+}
+
+const max = new Dog("Max", "Labrador");
+console.log(max.eat());
+console.log(max.bark());
+console.log("Breed:", max.breed);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOM Section -->
+        <section class="section" id="dom">
+            <div class="section-header">
+                <div class="section-icon">🖼️</div>
+                <h2 class="section-title">DOM Manipulation</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="dom-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Selecting Elements</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'dom-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Learn how to select HTML elements using querySelector and getElementById.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Select by ID</span>
+<span class="keyword">const</span> header = <span class="function">document</span>.<span class="function">getElementById</span>(<span class="string">"myHeader"</span>);
+
+<span class="comment">// Select by class</span>
+<span class="keyword">const</span> items = <span class="function">document</span>.<span class="function">getElementsByClassName</span>(<span class="string">"item"</span>);
+
+<span class="comment">// Select by tag</span>
+<span class="keyword">const</span> paragraphs = <span class="function">document</span>.<span class="function">getElementsByTagName</span>(<span class="string">"p"</span>);
+
+<span class="comment">// Modern selectors (recommended)</span>
+<span class="keyword">const</span> firstItem = <span class="function">document</span>.<span class="function">querySelector</span>(<span class="string">".item"</span>);
+<span class="keyword">const</span> allItems = <span class="function">document</span>.<span class="function">querySelectorAll</span>(<span class="string">".item"</span>);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// These selectors work on this page!
+// Try selecting elements from the page
+
+// Get element by ID
+const header = document.querySelector('header');
+console.log("Header found:", !!header);
+
+// Get all sections
+const sections = document.querySelectorAll('.section');
+console.log("Number of sections:", sections.length);
+
+// Get all lesson cards
+const cards = document.querySelectorAll('.lesson-card');
+console.log("Number of lessons:", cards.length);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="dom-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Modifying Elements</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'dom-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Change content, styles, and attributes of HTML elements.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Change text content</span>
+element.<span class="property">textContent</span> = <span class="string">"New text"</span>;
+
+<span class="comment">// Change innerHTML</span>
+element.<span class="property">innerHTML</span> = <span class="string">"&lt;b&gt;Bold&lt;/b&gt;"</span>;
+
+<span class="comment">// Change styles</span>
+element.<span class="property">style</span>.color = <span class="string">"red"</span>;
+element.<span class="property">style</span>.backgroundColor = <span class="string">"blue"</span>;
+
+<span class="comment">// Change attributes</span>
+element.<span class="function">setAttribute</span>(<span class="string">"class"</span>, <span class="string">"active"</span>);
+element.<span class="function">getAttribute</span>(<span class="string">"id"</span>);
+
+<span class="comment">// Add/remove classes</span>
+element.<span class="function">classList</span>.<span class="function">add</span>(<span class="string">"highlight"</span>);
+element.<span class="function">classList</span>.<span class="function">remove</span>(<span class="string">"hidden"</span>);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Let's work with a sample element
+// Create a test element
+const testDiv = document.createElement('div');
+testDiv.textContent = "Hello World";
+testDiv.style.color = "white";
+testDiv.style.padding = "10px";
+testDiv.style.background = "#0f3460";
+testDiv.style.borderRadius = "5px";
+
+// Add to output area
+console.log("Created element:", testDiv.tagName);
+console.log("Text content:", testDiv.textContent);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="dom-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Event Listeners</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'dom-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Handle user interactions with addEventListener.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Add event listener</span>
+button.<span class="function">addEventListener</span>(<span class="string">"click"</span>, <span class="keyword">function</span>(event) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Button clicked!"</span>);
+});
+
+<span class="comment">// Arrow function version</span>
+button.<span class="function">addEventListener</span>(<span class="string">"click"</span>, (e) => {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Clicked!"</span>);
+});
+
+<span class="comment">// Common events: click, mouseover, keyup, submit</span>
+input.<span class="function">addEventListener</span>(<span class="string">"keyup"</span>, (e) => {
+    <span class="function">console</span>.<span class="function">log</span>(e.<span class="property">target</span>.value);
+});
+
+<span class="comment">// Remove event listener</span>
+button.<span class="function">removeEventListener</span>(<span class="string">"click"</span>, handler);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Event listener demonstration
+// Click on any check button in the lessons above!
+// Each has a click event listener
+
+// Let's verify the event system works
+const checkButtons = document.querySelectorAll('.check-btn');
+console.log("Check buttons found:", checkButtons.length);
+
+// Add a click listener to first check button
+if (checkButtons.length > 0) {
+    checkButtons[0].addEventListener('click', function() {
+        console.log("First check button clicked!");
+    });
+}</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Async Section -->
+        <section class="section" id="async">
+            <div class="section-header">
+                <div class="section-icon">⏰</div>
+                <h2 class="section-title">Async JavaScript</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="async-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Promises</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'async-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Understand Promises - objects representing eventual completion of async operations.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Create a Promise</span>
+<span class="keyword">const</span> myPromise = <span class="keyword">new</span> <span class="function">Promise</span>((resolve, reject) => {
+    <span class="keyword">let</span> success = <span class="keyword">true</span>;
+    <span class="keyword">if</span> (success) {
+        resolve(<span class="string">"Operation succeeded!"</span>);
+    } <span class="keyword">else</span> {
+        reject(<span class="string">"Operation failed!"</span>);
+    }
+});
+
+<span class="comment">// Handle promise result</span>
+myPromise
+    .<span class="function">then</span>(result => <span class="function">console</span>.<span class="function">log</span>(result))
+    .<span class="function">catch</span>(error => <span class="function">console</span>.<span class="function">log</span>(error));
+
+<span class="comment">// Using Promise.all</span>
+<span class="keyword">const</span> promises = [<span class="function">Promise</span>.<span class="function">resolve</span>(<span class="number">1</span>), <span class="function">Promise</span>.<span class="function">resolve</span>(<span class="number">2</span>)];
+<span class="function">Promise</span>.<span class="function">all</span>(promises).<span class="function">then</span>(console.log);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Promise basics
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("Done after 1 second!");
+    }, 1000);
+});
+
+console.log("Promise created, waiting...");
+
+myPromise.then(result => {
+    console.log("Result:", result);
+});
+
+// Promise with error
+const errorPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        reject("Something went wrong!");
+    }, 500);
+});
+
+errorPromise
+    .then(result => console.log(result))
+    .catch(error => console.log("Error:", error));</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="async-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Async/Await</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'async-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Write cleaner async code using async/await syntax.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Async function</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">fetchData</span>() {
+    <span class="comment">// Simulate API call</span>
+    <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="keyword">new</span> <span class="function">Promise</span>(resolve => {
+        <span class="function">setTimeout</span>(() => resolve(<span class="string">"Data loaded"</span>), <span class="number">1000</span>);
+    });
+    <span class="function">console</span>.<span class="function">log</span>(data);
+}
+
+<span class="function">fetchData</span>();
+
+<span class="comment">// Async with try/catch</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">safeFetch</span>() {
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> result = <span class="keyword">await</span> someAsyncOperation();
+        <span class="function">console</span>.<span class="function">log</span>(result);
+    } <span class="keyword">catch</span> (error) {
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Error:"</span>, error);
+    }
+}</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Async/await demonstration
+async function fetchUser() {
+    // Simulate API call with delay
+    const user = await new Promise(resolve => {
+        setTimeout(() => {
+            resolve({ name: "John", age: 30 });
+        }, 1000);
+    });
+
+    console.log("User loaded:", user.name);
+    return user;
+}
+
+async function main() {
+    console.log("Starting...");
+    const user = await fetchUser();
+    console.log("User age:", user.age);
+    console.log("Done!");
+}
+
+main();</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="async-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Fetch API</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'async-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Make HTTP requests using the Fetch API.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// Basic fetch</span>
+<span class="function">fetch</span>(<span class="string">"https://api.example.com/data"</span>)
+    .<span class="function">then</span>(response => response.<span class="function">json</span>())
+    .<span class="function">then</span>(data => <span class="function">console</span>.<span class="function">log</span>(data))
+    .<span class="function">catch</span>(error => <span class="function">console</span>.<span class="function">log</span>(error));
+
+<span class="comment">// Using async/await</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">getData</span>() {
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">"url"</span>);
+        <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="function">json</span>();
+        <span class="function">console</span>.<span class="function">log</span>(data);
+    } <span class="keyword">catch</span> (e) {
+        <span class="function">console</span>.<span class="function">log</span>(<span class="string">"Error:"</span>, e);
+    }
+}</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Fetch API demonstration
+// Note: This uses JSONPlaceholder as a free API
+
+async function fetchPosts() {
+    try {
+        console.log("Fetching posts...");
+
+        // For demo, we'll simulate the fetch
+        const mockPosts = [
+            { id: 1, title: "Post 1" },
+            { id: 2, title: "Post 2" },
+            { id: 3, title: "Post 3" }
+        ];
+
+        // Simulate network delay
+        await new Promise(r => setTimeout(r, 500));
+
+        console.log("Fetched posts:", mockPosts.length);
+        console.log("First post:", mockPosts[0]);
+
+    } catch (error) {
+        console.log("Error:", error);
+    }
+}
+
+fetchPosts();</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ES6+ Section -->
+        <section class="section" id="es6">
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <h2 class="section-title">ES6+ Features</h2>
+            </div>
+
+            <div class="lesson-card" data-lesson="es6-1">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">01</span>
+                        <h3>Template Literals</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'es6-1')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Use backticks for multi-line strings and string interpolation.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">// String interpolation</span>
+<span class="keyword">const</span> name = <span class="string">"John"</span>;
+<span class="keyword">const</span> greeting = <span class="string">`Hello, <span class="keyword">${</span>name<span class="keyword">}</span>!`</span>;
+<span class="function">console</span>.<span class="function">log</span>(greeting);
+
+<span class="comment">// Multi-line strings</span>
+<span class="keyword">const</span> poem = <span class="string">`
+    Roses are red,
+    Violets are blue,
+    JavaScript is awesome,
+    And so are you!
+`</span>;
+<span class="function">console</span>.<span class="function">log</span>(poem);
+
+<span class="comment">// Expressions in template literals</span>
+<span class="keyword">const</span> a = <span class="number">5</span>, b = <span class="number">3</span>;
+<span class="function">console</span>.<span class="function">log</span>(<span class="string">`<span class="keyword">${</span>a<span class="keyword">}</span> + <span class="keyword">${</span>b<span class="keyword">}</span> = <span class="keyword">${</span>a + b<span class="keyword">}</span>`</span>);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">// Template literals
+const name = "Alice";
+const age = 25;
+
+// String interpolation
+console.log(`Hello, ${name}! You are ${age} years old.`);
+
+// Multi-line strings
+const address = `
+123 Main Street
+City, State 12345
+Country
+`;
+console.log("Address:" + address);
+
+// Expressions
+const a = 10, b = 20;
+console.log(`${a} * ${b} = ${a * b}`);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="es6-2">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">02</span>
+                        <h3>Destructuring Objects</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'es6-2')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Extract values from objects using destructuring syntax.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="keyword">const</span> user = {
+    name: <span class="string">"John"</span>,
+    age: <span class="number">30</span>,
+    city: <span class="string">"NYC"</span>,
+    country: <span class="string">"USA"</span>
+};
+
+<span class="comment">// Basic destructuring</span>
+<span class="keyword">const</span> { name, age } = user;
+<span class="function">console</span>.<span class="function">log</span>(name, age);
+
+<span class="comment">// Rename variables</span>
+<span class="keyword">const</span> { name: userName, age: userAge } = user;
+<span class="function">console</span>.<span class="function">log</span>(userName);
+
+<span class="comment">// Default values</span>
+<span class="keyword">const</span> { name, country = <span class="string">"Unknown"</span> } = user;
+<span class="function">console</span>.<span class="function">log</span>(country);
+
+<span class="comment">// Nested destructuring</span>
+<span class="keyword">const</span> { address: { city } } = { address: { city: <span class="string">"LA"</span> } };
+<span class="function">console</span>.<span class="function">log</span>(city);</code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">const user = {
+    name: "Emma",
+    age: 28,
+    city: "London",
+    skills: ["JS", "React", "Node"]
+};
+
+// Basic destructuring
+const { name, age } = user;
+console.log("Name:", name);
+console.log("Age:", age);
+
+// Rename variables
+const { city: userCity } = user;
+console.log("City:", userCity);
+
+// Default values
+const { country = "Unknown" } = user;
+console.log("Country:", country);
+
+// Nested destructuring
+const { skills: [firstSkill] } = user;
+console.log("First skill:", firstSkill);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card" data-lesson="es6-3">
+                <div class="lesson-header" onclick="toggleLesson(this)">
+                    <div class="lesson-title">
+                        <span class="lesson-number">03</span>
+                        <h3>Optional Chaining & Nullish</h3>
+                    </div>
+                    <div class="lesson-meta">
+                        <div class="check-btn" onclick="toggleComplete(event, 'es6-3')"></div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="lesson-content">
+                    <div class="lesson-body">
+                        <p class="lesson-description">Safely access nested properties with optional chaining and nullish coalescing.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">Example</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="keyword">const</span> user = {
+    name: <span class="string">"John"</span>,
+    address: {
+        city: <span class="string">"NYC"</span>
+    }
+};
+
+<span class="comment">// Optional chaining (?.)</span>
+<span class="function">console</span>.<span class="function">log</span>(user?.name);        <span class="comment">// John</span>
+<span class="function">console</span>.<span class="function">log</span>(user?.address?.city); <span class="comment">// NYC</span>
+<span class="function">console</span>.<span class="function">log</span>(user?.phone);        <span class="comment">// undefined</span>
+
+<span class="comment">// Nullish coalescing (??)</span>
+<span class="keyword">const</span> value = <span class="keyword">null</span> ?? <span class="string">"default"</span>;
+<span class="function">console</span>.<span class="function">log</span>(value);  <span class="comment">// "default"</span>
+
+<span class="keyword">const</span> num = <span class="number">0</span> ?? <span class="number">100</span>;
+<span class="function">console</span>.<span class="function">log</span>(num);    <span class="comment">// 0 (not falsy, but nullish)</span></code></pre>
+                        </div>
+                        <button class="try-it-btn" onclick="openPlayground(this)">▶ Try It</button>
+                        <div class="playground">
+                            <div class="playground-header">
+                                <span class="playground-title">Interactive Editor</span>
+                            </div>
+                            <textarea placeholder="// Write your JavaScript here...">const user = {
+    name: "Sarah",
+    address: {
+        city: "Paris"
+    },
+    age: 0
+};
+
+// Optional chaining
+console.log("Name:", user?.name);
+console.log("City:", user?.address?.city);
+console.log("Phone:", user?.phone);
+console.log("Zip:", user?.address?.zip?.code);
+
+// Nullish coalescing
+const value1 = null ?? "default";
+console.log("Nullish:", value1);
+
+const value2 = 0 ?? "default";
+console.log("Zero:", value2);
+
+const value3 = "" ?? "default";
+console.log("Empty string:", value3);</textarea>
+                            <div class="playground-actions">
+                                <button class="run-btn" onclick="runCode(this)">▶ Run</button>
+                                <button class="clear-btn" onclick="clearOutput(this)">Clear</button>
+                            </div>
+                            <div class="output-area">
+                                <div class="output-label">Output</div>
+                                <div class="output-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Built with ❤️ to help you master JavaScript</p>
+        <p>Practice, experiment, and have fun learning!</p>
+    </footer>
+
+    <script>
+        // Navigation
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+                document.querySelectorAll('.nav-pill').forEach(pill => {
+                    pill.classList.remove('active');
+                });
+                event.target.classList.add('active');
+            }
+            if (window.innerWidth <= 768) {
+                document.getElementById('nav').classList.remove('active');
+            }
+        }
+
+        // Lesson Cards
+        function toggleLesson(header) {
+            const card = header.closest('.lesson-card');
+            card.classList.toggle('expanded');
+        }
+
+        // Copy Code
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block');
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Playground
+        function openPlayground(btn) {
+            const playground = btn.nextElementSibling;
+            playground.classList.toggle('active');
+        }
+
+        function runCode(btn) {
+            const playground = btn.closest('.playground');
+            const code = playground.querySelector('textarea').value;
+            const output = playground.querySelector('.output-content');
+
+            try {
+                let logs = [];
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    logs.push(args.map(a =>
+                        typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)
+                    ).join(' '));
+                };
+
+                eval(code);
+
+                console.log = originalLog;
+                output.textContent = logs.join('\n');
+                output.classList.remove('error');
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+                output.classList.add('error');
+            }
+        }
+
+        function clearOutput(btn) {
+            const playground = btn.closest('.playground');
+            playground.querySelector('.output-content').textContent = '';
+        }
+
+        // Progress Tracking
+        const COMPLETED_KEY = 'js-mastery-completed';
+
+        function getCompleted() {
+            return JSON.parse(localStorage.getItem(COMPLETED_KEY) || '[]');
+        }
+
+        function saveCompleted(completed) {
+            localStorage.setItem(COMPLETED_KEY, JSON.stringify(completed));
+            updateProgress();
+        }
+
+        function toggleComplete(event, lessonId) {
+            event.stopPropagation();
+            const completed = getCompleted();
+            const index = completed.indexOf(lessonId);
+
+            if (index > -1) {
+                completed.splice(index, 1);
+            } else {
+                completed.push(lessonId);
+            }
+
+            saveCompleted(completed);
+            updateUI();
+        }
+
+        function updateUI() {
+            const completed = getCompleted();
+
+            document.querySelectorAll('.lesson-card').forEach(card => {
+                const lessonId = card.dataset.lesson;
+                const checkBtn = card.querySelector('.check-btn');
+
+                if (completed.includes(lessonId)) {
+                    checkBtn.classList.add('checked');
+                    card.classList.add('completed');
+                } else {
+                    checkBtn.classList.remove('checked');
+                    card.classList.remove('completed');
+                }
+            });
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.lesson-card').length;
+            const completed = getCompleted().length;
+            const percentage = Math.round((completed / total) * 100);
+
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = percentage + '%';
+            document.getElementById('lessonCount').textContent = total;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            updateProgress();
+        });
+
+        // Smooth scroll for nav pills
+        document.querySelectorAll('.nav-pill').forEach(pill => {
+            pill.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('onclick').match(/'(.*)'/)[1];
+                scrollToSection(targetId);
+            });
+        });
+    </script>
+</body>
+</html>
